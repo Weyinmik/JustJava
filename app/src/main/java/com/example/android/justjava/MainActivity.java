@@ -7,10 +7,12 @@ package com.example.android.justjava;
  *
  */
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 
@@ -19,7 +21,8 @@ import java.text.NumberFormat;
  */
 public class MainActivity extends AppCompatActivity {
 
-    int quantity = 0;
+    static final String STATE_QUANTITY = "quantity";
+    int quantity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,49 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle saveInstanceState) {
+        super.onRestoreInstanceState(saveInstanceState);
+
+        if (saveInstanceState != null) {
+            quantity = saveInstanceState.getInt("number of coffees");
+
+        }
+
+        int price = quantity * 5;
+        String priceMessage = "Total: $" + price + "\nThank you!";
+
+        display(quantity);
+        displayMessage(priceMessage);
+        displayPrice(quantity * 5);
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            int price = quantity * 5;
+            String priceMessage = "Total: $" + price + "\nThank you!";
+
+            display(quantity);
+            displayMessage(priceMessage);
+            displayPrice(quantity * 5);
+            Toast.makeText(this, "portrait view", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            int price = quantity * 5;
+            String priceMessage = "Total: $" + price + "\nThank you!";
+
+            display(quantity);
+            displayMessage(priceMessage);
+            displayPrice(quantity * 5);
+            Toast.makeText(this, "landscape view", Toast.LENGTH_SHORT).show();
+
+
+        }
+
+    }
 
     /**
      * This method increases the quantity of customer order when the plus button is clicked
